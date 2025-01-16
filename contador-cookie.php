@@ -1,29 +1,11 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-$servername = "localhost";
-$username = "admin";
-$password = "12345";
-$dbname = "estadistics";
-
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar conexión
-if ($conn->connect_errno) {
-    echo "Error en connectar a MySQL: " . $conn->connect_error;
-    exit();
+$count = $_COOKIE['count'];
+if (isset($count)) {
+    $count++;
+} else {
+    $count = 0;
 }
 
-$ip = $_SERVER['REMOTE_ADDR'];
-$sql = "INSERT INTO registre(ip) VALUES ('$ip')";
-$conn->query($sql);
-
-$resultat = $conn->query("SELECT COUNT(*) FROM registre");
-$row = mysqli_fetch_array($resultat);
-echo $row[0];
-
-$conn->close();
+setcookie('count', $count);
+echo $count;
 ?>
