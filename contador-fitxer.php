@@ -1,29 +1,15 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+$contador = 0;
 
-$servername = "localhost";
-$username = "admin";
-$password = "12345";
-$dbname = "estadistics";
-
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar conexión
-if ($conn->connect_errno) {
-    echo "Error en connectar a MySQL: " . $conn->connect_error;
-    exit();
+if ($fd = fopen('counter.txt', 'r')) {
+    $contador = fgets($fd);
+    fclose($fd);
 }
 
-$ip = $_SERVER['REMOTE_ADDR'];
-$sql = "INSERT INTO registre(ip) VALUES ('$ip')";
-$conn->query($sql);
+$fd2 = fopen('counter.txt', 'w');
+$contador = $contador + 1;
+fwrite($fd2, $contador);
+fclose($fd2);
 
-$resultat = $conn->query("SELECT COUNT(*) FROM registre");
-$row = mysqli_fetch_array($resultat);
-echo $row[0];
-
-$conn->close();
+echo $contador;
 ?>
